@@ -34,6 +34,10 @@ public class PedidoService {
  
     @Autowired
     private IProductoRepository productoRepo;
+    
+    //esto es para el gmail la notificacion
+    @Autowired
+    private EmailService emailService;
  
     // Pedido entidad → DTO
     private PedidoDTO toDTO(Pedido p) {
@@ -121,6 +125,28 @@ public class PedidoService {
  
             // Descontar stock
             productoRepo.descontarStock(item.getProductoId(), item.getCantidad());
+        }
+        
+        
+        // Enviar email de confirmación (en segundo plano con @Async)
+        try {
+            // Obtener el email del cliente
+            String emailCliente = cliente.getEmail();
+            String nombreCliente = cliente.getNombre();
+         
+            // Obtener detalle para el email
+            List<DetallePedidoDTO> detalleEmail = listarDetallePorPedido(pedidoGuardado.getPedidoId());
+         
+            emailService.enviarConfirmacionPedido(
+                emailCliente,
+                nombreCliente,
+                pedidoGuardado.getPedidoId(),
+                pedidoGuardado.getTotal(),
+                detalleEmail
+            );
+        } catch (Exception e) {
+            // Si falla el email, el pedido igual queda confirmado
+            System.err.println("Error al enviar email de confirmación: " + e.getMessage());
         }
  
         return toDTO(pedidoGuardado);

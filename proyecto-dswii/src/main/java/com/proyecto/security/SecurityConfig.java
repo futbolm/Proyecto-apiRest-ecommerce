@@ -29,9 +29,13 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
 
             		
-            		// SWAGGER - publico
-
-            	.requestMatchers("/swagger-ui/ ** ", "/v3/api-docs/ ** ").permitAll()
+            	// SWAGGER - publico
+            	.requestMatchers(
+            	    "/swagger-ui/**",
+            	    "/swagger-ui.html",
+            	    "/v3/api-docs/**",
+            	    "/v3/api-docs.yaml"
+            	).permitAll()	
             		
             		
                 // ══════════════════════════════════════════

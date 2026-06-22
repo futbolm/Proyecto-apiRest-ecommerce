@@ -28,6 +28,12 @@ public class SecurityConfig {
         .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
 
+            		
+            		// SWAGGER - publico
+
+            	.requestMatchers("/swagger-ui/ ** ", "/v3/api-docs/ ** ").permitAll()
+            		
+            		
                 // ══════════════════════════════════════════
                 // PÚBLICOS — van PRIMERO, más específicos
                 // ══════════════════════════════════════════

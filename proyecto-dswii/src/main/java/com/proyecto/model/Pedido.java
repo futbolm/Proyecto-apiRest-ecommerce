@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -18,6 +19,7 @@ public class Pedido {
     @Column(name = "PedidoId")
     private Integer pedidoId;
 
+    @NotNull(message = "El clienteId es obligatorio")
     @ManyToOne
     @JoinColumn(name = "ClienteId")
     private Cliente cliente;
